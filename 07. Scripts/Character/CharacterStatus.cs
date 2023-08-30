@@ -573,7 +573,7 @@ public class CharacterStatus : MonoBehaviourPun
 	{
 		if (photonView.IsMine)
 			photonView.RPC("RpcTakeDamageMaster", RpcTarget.MasterClient, 
-				Mathf.Max(0.0f, (DamageAmount - FinalDefense) * (1 - DamageReduceMult)),
+				DamageAmount,
 				CauserPosition);
 	}
 
@@ -592,7 +592,9 @@ public class CharacterStatus : MonoBehaviourPun
 	[PunRPC]
 	protected void RpcTakeDamageMaster(float DamageAmount, Vector3 CauserPosition)
 	{
-		photonView.RPC("RpcTakeDamageAll", RpcTarget.All, DamageAmount, CauserPosition);
+		photonView.RPC("RpcTakeDamageAll", RpcTarget.All,
+			Mathf.Max(0.0f, (DamageAmount - FinalDefense) * (1 - DamageReduceMult)),
+			CauserPosition);
 	}
 
 
